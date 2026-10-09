@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>注册 · 校园失物招领</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="header"></header>
+
+  <main class="container narrow">
+    <div class="card">
+      <h2 class="page-title">注册新账号</h2>
+      <p class="page-subtitle">填写基本信息即可开始发布失物与招领信息。</p>
+
+      <div class="alert" id="alert"></div>
+
+      <form id="register-form" autocomplete="on">
+        <div class="field">
+          <label for="studentId">学号<span class="req">必填</span><span class="hint">8 位数字</span></label>
+          <input type="text" id="studentId" name="studentId" autocomplete="username" inputmode="numeric" maxlength="8" placeholder="例如：20230101" required>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label for="password">密码<span class="req">必填</span><span class="hint">至少 6 位</span></label>
+            <input type="password" id="password" name="password" autocomplete="new-password" required>
+          </div>
+          <div class="field">
+            <label for="confirm">确认密码<span class="req">必填</span><span class="hint">需与密码一致</span></label>
+            <input type="password" id="confirm" autocomplete="new-password" required>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label for="name">姓名<span class="opt">选填</span></label>
+            <input type="text" id="name" name="name" maxlength="32" placeholder="例如：张三">
+          </div>
+          <div class="field">
+            <label for="contact">联系方式<span class="opt">选填</span></label>
+            <input type="text" id="contact" name="contact" maxlength="120" placeholder="手机号 / 邮箱 / 微信">
+          </div>
+        </div>
+
+        <button class="btn block" type="submit" id="submit-btn">注册并登录</button>
+      </form>
+
+      <p class="small muted mt-16">已有账号？<a href="/login">前往登录</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">校园失物招领系统 · Node.js + Express + SQLite 示例项目</footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>校园失物招领</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="header"></header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>校园失物招领平台</h1>
+      <p>丢了东西？捡到东西？在这里发布信息，让失物更快回到主人身边。</p>
+      <div class="searchbar">
+        <input type="search" id="keyword" placeholder="搜索物品名称、描述或地点…">
+        <select id="category">
+          <option value="">全部分类</option>
+        </select>
+        <select id="status">
+          <option value="">全部状态</option>
+          <option value="open">寻找中</option>
+          <option value="found">已找到</option>
+          <option value="closed">已结束</option>
+        </select>
+        <select id="sort">
+          <option value="createdAt:desc">最新发布</option>
+          <option value="createdAt:asc">最早发布</option>
+          <option value="happenedAt:desc">发生时间（新→旧）</option>
+          <option value="happenedAt:asc">发生时间（旧→新）</option>
+          <option value="status:asc">按进度状态</option>
+          <option value="title:asc">按标题</option>
+        </select>
+        <select id="limit">
+          <option value="6">每页 6 条</option>
+          <option value="9" selected>每页 9 条</option>
+          <option value="12">每页 12 条</option>
+        </select>
+        <button class="btn" id="search-btn">搜索</button>
+      </div>
+    </section>
+
+    <div class="tabs" id="type-tabs">
+      <button data-type="" class="active">全部</button>
+      <button data-type="lost">寻物启事</button>
+      <button data-type="found">失物招领</button>
+    </div>
+
+    <div class="alert" id="alert"></div>
+    <p class="muted small" id="summary"></p>
+    <div class="item-grid" id="list"></div>
+    <div class="pager" id="pager"></div>
+  </main>
+
+  <footer class="site-footer">校园失物招领系统 · SQLite + Go / Node.js 示例项目</footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/index.js"></script>
+</body>
+</html>

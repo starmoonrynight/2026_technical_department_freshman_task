@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CRUD 接口示例 · 校园失物招领</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="header"></header>
+
+  <main class="container">
+    <div class="card">
+      <h2 class="page-title">失物 / 招领 CRUD 接口示例</h2>
+      <p class="page-subtitle">
+        本页所有请求都用原生 <b>Fetch API</b> 直接调用后端，代码见
+        <code>public/js/crud-demo.js</code>，可以直接对照下面的接口路径阅读。
+      </p>
+      <div class="alert" id="alert"></div>
+      <p class="page-subtitle" id="who" style="margin:0"></p>
+    </div>
+
+    <!-- ① 列表 -->
+    <div class="card mt-24">
+      <h3>① 列表　<span class="muted small">GET /api/items</span></h3>
+      <div class="searchbar mt-16">
+        <select id="f-type">
+          <option value="">全部类型</option>
+          <option value="lost">寻物启事</option>
+          <option value="found">失物招领</option>
+        </select>
+        <select id="f-category"><option value="">全部分类</option></select>
+        <select id="f-status">
+          <option value="">全部状态</option>
+          <option value="open">寻找中</option>
+          <option value="found">已找到</option>
+          <option value="closed">已结束</option>
+        </select>
+        <input type="search" id="f-keyword" placeholder="关键字：标题 / 描述 / 地点 / 分类">
+        <select id="f-pageSize">
+          <option value="4">每页 4 条</option>
+          <option value="8">每页 8 条</option>
+          <option value="12">每页 12 条</option>
+        </select>
+        <button class="btn" id="btn-search">查询</button>
+        <button class="btn ghost" id="btn-reset">重置</button>
+      </div>
+
+      <div class="item-grid mt-16" id="item-grid"></div>
+      <div class="pager" id="pager"></div>
+    </div>
+
+    <!-- ② 创建 -->
+    <div class="card mt-24">
+      <h3>② 创建　<span class="muted small">POST /api/items　必须登录</span></h3>
+      <div class="alert" id="create-alert"></div>
+
+      <form id="create-form">
+        <div class="grid-2">
+          <div class="field">
+            <label for="c-type">信息类型</label>
+            <select id="c-type">
+              <option value="lost">寻物启事（我丢了东西）</option>
+              <option value="found">失物招领（我捡到东西）</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="c-category">物品分类</label>
+            <select id="c-category"></select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="c-title">标题<span class="hint">必填，最多 80 字</span></label>
+          <input type="text" id="c-title" maxlength="80" placeholder="例如：丢失一个黑色长款钱包">
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="c-location">地点</label>
+            <input type="text" id="c-location" maxlength="120" placeholder="例如：图书馆三楼自习区">
+          </div>
+          <div class="field">
+            <label for="c-happenedAt">时间</label>
+            <input type="text" id="c-happenedAt" maxlength="40" placeholder="例如：2026-10-01 15:30">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="c-contact">联系方式<span class="hint">留空则用账号里的联系方式</span></label>
+            <input type="text" id="c-contact" maxlength="120">
+          </div>
+          <div class="field">
+            <label for="c-imageUrl">图片地址<span class="hint">选填</span></label>
+            <input type="text" id="c-imageUrl" maxlength="500" placeholder="https://…">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="c-storagePlace">寄放处<span class="hint">选填；捡到物品时填写现在存放在哪里</span></label>
+          <input type="text" id="c-storagePlace" maxlength="120" placeholder="例如：图书馆一楼服务台">
+        </div>
+
+        <div class="field">
+          <label for="c-description">详细描述</label>
+          <textarea id="c-description" maxlength="2000"></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" type="submit" id="btn-create">提交创建</button>
+          <span class="muted small">创建成功后默认是「待审核」，需要管理员通过才会出现在首页。</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- ③ 详情 / 修改 / 删除 -->
+    <div class="card mt-24">
+      <h3>③ 详情 · 修改 · 删除</h3>
+      <p class="page-subtitle" id="selected-tip" style="margin:0">
+        还没有选中任何信息。在①的列表里点「选中」。
+      </p>
+
+      <div class="alert" id="edit-alert"></div>
+      <div id="detail-box"></div>
+
+      <form id="edit-form" style="display:none">
+        <div class="grid-2">
+          <div class="field">
+            <label for="e-type">信息类型</label>
+            <select id="e-type">
+              <option value="lost">寻物启事</option>
+              <option value="found">失物招领</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="e-status">进度状态</label>
+            <select id="e-status">
+              <option value="open">寻找中</option>
+              <option value="found">已找到</option>
+              <option value="closed">已结束</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="e-title">标题</label>
+          <input type="text" id="e-title" maxlength="80">
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="e-category">物品分类</label>
+            <select id="e-category"></select>
+          </div>
+          <div class="field">
+            <label for="e-location">地点</label>
+            <input type="text" id="e-location" maxlength="120">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="e-happenedAt">时间</label>
+            <input type="text" id="e-happenedAt" maxlength="40">
+          </div>
+          <div class="field">
+            <label for="e-contact">联系方式</label>
+            <input type="text" id="e-contact" maxlength="120">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="e-storagePlace">寄放处</label>
+          <input type="text" id="e-storagePlace" maxlength="120">
+        </div>
+
+        <div class="field">
+          <label for="e-description">详细描述</label>
+          <textarea id="e-description" maxlength="2000"></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" type="button" id="btn-put">PUT 整体替换</button>
+          <button class="btn ghost" type="button" id="btn-patch">PATCH 局部更新</button>
+          <button class="btn ghost" type="button" id="btn-toggle-status">POST 切换进度状态</button>          <button class="btn ghost" type="button" id="btn-refresh-detail">重新读取详情</button>
+          <button class="btn danger" type="button" id="btn-delete">DELETE 删除</button>
+        </div>
+        <p class="muted small mt-16" style="margin-bottom:0">
+          PUT 会把请求体里没写的字段清空；PATCH 只改请求体里出现的字段。
+          普通用户改完会重新变成「待审核」。
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">校园失物招领系统 · 接口示例页</footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/crud-demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# ---------- 密钥与环境变量：永远不入库 ----------
+.env
+.env.*
+!.env.example
+
+# ---------- 图片上传目录 ----------
+# 保留 .gitkeep 让空目录能进 git，其余内容（用户上传的图片）全部忽略
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# ---------- Go ----------
+backend/bin/
+*.exe
+*.exe~
+*.test
+*.out
+coverage.html
+
+# ---------- 前端（M7 才创建）----------
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ---------- 编辑器与系统 ----------
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

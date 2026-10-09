@@ -1,0 +1,20 @@
+# 行尾统一：仓库里存 LF，检出时也写 LF。
+#
+# 为什么必须显式声明：这台机器的 system 级 git 配置里 core.autocrlf=true，
+# 它会在检出时把 LF 换成 CRLF。对 Go / SQL / YAML 无所谓，但对 scripts/*.sh 是致命的 ——
+# bash 会把行尾的 \r 当成命令的一部分，报 `$'\r': command not found`，
+# 而且报错位置指向的行看起来完全正常，非常难查。
+# 一旦有人重新 clone 或者跑 git checkout，脚本就会静默坏掉。
+#
+# eol=lf 只管检出的行尾，不影响 git 内部存储（存储永远是 LF）。
+* text=auto eol=lf
+
+# 明确标出二进制：M2 开始会有用户上传的图片进 backend/uploads（虽然默认被忽略），
+# 万一将来要入库，被当文本做行尾转换会直接损坏文件。
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary

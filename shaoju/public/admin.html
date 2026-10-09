@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>管理后台 · 校园失物招领</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="header"></header>
+
+  <main class="container">
+    <h2 class="page-title">管理后台</h2>
+    <p class="page-subtitle">审核发布信息、维护用户账号。</p>
+
+    <div class="stat-grid" id="stats"></div>
+
+    <div class="searchbar" id="filters" style="display:none;margin-bottom:16px">
+      <input type="search" id="keyword" placeholder="按标题、描述或地点搜索…">
+      <select id="auditFilter">
+        <option value="">全部审核状态</option>
+        <option value="pending">待审核</option>
+        <option value="approved">已通过</option>
+        <option value="rejected">已驳回</option>
+      </select>
+      <button class="btn" id="filter-btn">筛选</button>
+    </div>
+
+    <div class="alert" id="alert"></div>
+
+    <div class="tabs" id="tabs">
+      <button data-view="pending" class="active">待审核信息</button>
+      <button data-view="items">全部信息</button>
+      <button data-view="users">用户管理</button>
+    </div>
+
+    <div class="card" style="padding:0">
+      <div class="table-wrap">
+        <table id="table">
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pager" id="pager"></div>
+  </main>
+
+  <footer class="site-footer">校园失物招领系统 · Node.js + Express + SQLite 示例项目</footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

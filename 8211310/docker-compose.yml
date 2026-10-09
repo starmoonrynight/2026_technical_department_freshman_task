@@ -1,0 +1,38 @@
+services:
+  # 只跑数据库和数据库界面。
+  # backend 和 frontend 刻意不进 compose（§11）：开发期直接 go run / npm run dev，
+  # 热重载快、断点好打、日志直接可见。容器化开发环境在 Windows 上卷挂载很慢，
+  # 改一行代码等重建，纯摩擦。
+  postgres:
+    image: postgres:16-alpine
+    container_name: lostfound-postgres
+    environment:
+      POSTGRES_USER: lf
+      POSTGRES_PASSWORD: lf
+      POSTGRES_DB: lostfound
+      # 中文排序需要 UTF8，alpine 镜像默认就是 C.UTF-8，这里显式写清楚免得将来换镜像踩坑
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # pg_isready 在容器里执行，所以本机不需要装任何 postgres 客户端工具
+      test: ["CMD-SHELL", "pg_isready -U lf -d lostfound"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  adminer:
+    image: adminer:latest
+    container_name: lostfound-adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+    # 打开 http://localhost:8081 后填：
+    #   系统 PostgreSQL / 服务器 postgres（不是 localhost，容器之间靠服务名互访）
+    #   用户名 lf / 密码 lf / 数据库 lostfound
+
+volumes:
+  pgdata:

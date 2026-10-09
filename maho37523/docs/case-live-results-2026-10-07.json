@@ -1,0 +1,252 @@
+{
+  "mode": "live-provider-extraction-and-six-controlled-pairs",
+  "started_at": "2026-10-07T22:59:45+08:00",
+  "configured_model": "deepseek-flash",
+  "api_request_attempts": 14,
+  "extractions": [
+    {
+      "file": "1.jpg",
+      "suggestion": {
+        "name": "充电宝",
+        "category": "电子产品",
+        "color": "银色",
+        "brand": "",
+        "description": "银色长方体充电宝，正面有黑色显示屏，显示100%，下方有按键；机身下部印有165W和20000mAh字样。",
+        "tags": [
+          "充电宝",
+          "165W",
+          "20000mAh",
+          "数显"
+        ]
+      }
+    },
+    {
+      "file": "2.jpg",
+      "suggestion": {
+        "name": "鼠标",
+        "category": "电子产品",
+        "color": "白色、灰色",
+        "brand": "",
+        "description": "白色与灰色配色的鼠标，表面有几何线条和镂空结构，滚轮及中键为灰色，侧面有灰色按键，正面下方有六边形标志。",
+        "tags": [
+          "鼠标",
+          "白色",
+          "灰色",
+          "无线鼠标"
+        ]
+      }
+    },
+    {
+      "file": "4.jpg",
+      "suggestion": {
+        "name": "无线耳机充电盒",
+        "category": "电子产品",
+        "color": "白色",
+        "brand": "OPPO",
+        "description": "白色椭圆形充电盒，表面有光泽，盒盖印有黑色OPPO字样，正面有一小圆点指示灯，侧面可见开盖凹槽。",
+        "tags": [
+          "耳机盒",
+          "充电盒",
+          "白色",
+          "OPPO"
+        ]
+      }
+    },
+    {
+      "file": "5.jpg",
+      "suggestion": {
+        "name": "黑色长方形物品",
+        "category": "电子产品",
+        "color": "黑色",
+        "brand": "",
+        "description": "黑色长方形外壳，表面有斜向纹理，顶部有凹槽和金属件，底部连接黑色编织挂绳。",
+        "tags": [
+          "黑色",
+          "长方形",
+          "挂绳",
+          "纹理"
+        ]
+      }
+    },
+    {
+      "file": "23.png",
+      "suggestion": {
+        "name": "无线耳机",
+        "category": "电子产品",
+        "color": "白色",
+        "brand": "OPPO",
+        "description": "白色充电盒，盒盖打开，内置两只白色入耳式耳机，耳机上有黑色椭圆形开孔，充电盒正面印有OPPO标志，下方有指示灯",
+        "tags": [
+          "耳机",
+          "无线耳机",
+          "充电盒"
+        ]
+      }
+    },
+    {
+      "file": "231.jpg",
+      "suggestion": {
+        "name": "移动电源",
+        "category": "电子产品",
+        "color": "银灰色",
+        "brand": "",
+        "description": "长方体银灰色外壳，正面左侧印有“165W”和“20000”字样，右侧有黑色亮面显示区域及按键，表面有轻微划痕。",
+        "tags": [
+          "充电宝",
+          "165W",
+          "20000",
+          "银色"
+        ]
+      }
+    },
+    {
+      "file": "4341.jpg",
+      "suggestion": {
+        "name": "移动电源",
+        "category": "电子产品",
+        "color": "深灰色",
+        "brand": "",
+        "description": "长方体深灰色移动电源，表面印有“165W”和“20000”字样，中部有黑色矩形区域及方形按键，侧面有多个标识图标，表面有轻微划痕。",
+        "tags": [
+          "充电宝",
+          "165W",
+          "20000mAh"
+        ]
+      }
+    },
+    {
+      "file": "43951.jpg",
+      "suggestion": {
+        "name": "笔记本电脑",
+        "category": "电子产品",
+        "color": "银色",
+        "brand": "",
+        "description": "银色金属外壳笔记本电脑，屏幕显示代码编辑器界面，键盘为黑色按键，触控板位于键盘下方，机身侧面有接口连接线缆。",
+        "tags": [
+          "笔记本电脑",
+          "银色",
+          "金属外壳"
+        ]
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "lost_file": "1.jpg",
+      "found_file": "231.jpg",
+      "control": "visual-candidate-unverified",
+      "judgement": {
+        "possible": true,
+        "score": 0.9,
+        "reasons": [
+          "类别一致：均为电子产品/充电宝",
+          "颜色一致：均为银色/银灰色",
+          "独特标识一致：均印有165W和20000/20000mAh字样",
+          "外观结构一致：均为长方体，正面有黑色亮面显示区域及按键",
+          "丢失帖描述显示屏显示100%，与找到帖图片显示100%相符"
+        ],
+        "conflicts": [],
+        "uncertainty": "丢失帖图片为产品渲染图，找到帖为实物照片，无法仅凭外观确认是否为同一台设备；地点与时间信息均为测试用虚构数据，无法用于比对；未提供序列号等唯一标识。"
+      },
+      "notification_created": true
+    },
+    {
+      "lost_file": "1.jpg",
+      "found_file": "4341.jpg",
+      "control": "visual-candidate-unverified",
+      "judgement": {
+        "possible": true,
+        "score": 0.72,
+        "reasons": [
+          "两者均为长方体移动电源/充电宝，类别一致",
+          "均标注165W与20000mAh，容量与功率标识高度一致",
+          "均具备黑色矩形显示区域及方形按键，结构布局相似",
+          "丢失帖描述为银色，找到帖图片呈现深灰色/银灰色，存在色差但可能受光线影响"
+        ],
+        "conflicts": [
+          "颜色描述存在差异：丢失帖称银色，找到帖称深灰色"
+        ],
+        "uncertainty": "仅凭外观与文字无法确认归属；颜色差异可能源于光线或版本不同，需实物核对序列号或购买凭证，但不应据此确认归属。"
+      },
+      "notification_created": false
+    },
+    {
+      "lost_file": "23.png",
+      "found_file": "4.jpg",
+      "control": "visual-candidate-unverified",
+      "judgement": {
+        "possible": true,
+        "score": 0.85,
+        "reasons": [
+          "品牌一致：均为OPPO",
+          "类别一致：均为无线耳机充电盒/电子产品",
+          "颜色一致：均为白色",
+          "外观特征高度吻合：椭圆形充电盒、盒盖印有OPPO字样、正面有指示灯、侧面有开盖凹槽",
+          "丢失帖描述内置两只白色入耳式耳机及黑色椭圆形开孔，与找到帖图片中充电盒内部结构相符"
+        ],
+        "conflicts": [],
+        "uncertainty": "丢失帖图片为产品渲染图，找到帖图片为实物拍摄，无法确认是否为同一具体实物；地点与时间信息均为测试用虚构数据，无法用于比对；未提供序列号等唯一标识，不能确认归属。"
+      },
+      "notification_created": true
+    },
+    {
+      "lost_file": "1.jpg",
+      "found_file": "2.jpg",
+      "control": "different-object-category",
+      "judgement": {
+        "possible": false,
+        "score": 0,
+        "reasons": [
+          "丢失帖描述的是银色长方体充电宝，找到帖描述的是白色与灰色配色的鼠标，两者类别虽同属电子产品但具体物品类型不同。"
+        ],
+        "conflicts": [
+          "物品类型矛盾：丢失帖为充电宝，找到帖为鼠标。",
+          "颜色矛盾：丢失帖为银色，找到帖为白色与灰色。",
+          "外观特征矛盾：丢失帖有黑色显示屏、165W、20000mAh字样，找到帖有几何线条、镂空结构、六边形标志。"
+        ],
+        "uncertainty": "丢失帖与找到帖均提供了图片，但图片内容分别对应充电宝和鼠标，无法指向同一实物；地点与时间信息均为测试用虚构数据，无法用于比对。"
+      },
+      "notification_created": false
+    },
+    {
+      "lost_file": "1.jpg",
+      "found_file": "43951.jpg",
+      "control": "different-object-category",
+      "judgement": {
+        "possible": false,
+        "score": 0,
+        "reasons": [
+          "丢失帖描述的是银色长方体充电宝，有黑色显示屏、按键及165W/20000mAh标识；找到帖描述的是银色金属外壳笔记本电脑，有屏幕、键盘和触控板。",
+          "两者虽同为银色电子产品，但物品类别和独特外观特征完全不同，不存在同一实物的可能。"
+        ],
+        "conflicts": [
+          "物品类别矛盾：充电宝 vs 笔记本电脑",
+          "外观特征矛盾：充电宝的数显屏/按键/容量标识 vs 笔记本电脑的屏幕/键盘/触控板"
+        ],
+        "uncertainty": "丢失帖和找到帖均提供了图片，图片内容与各自文字描述一致，进一步确认两者为不同物品。"
+      },
+      "notification_created": false
+    },
+    {
+      "lost_file": "23.png",
+      "found_file": "2.jpg",
+      "control": "different-object-category",
+      "judgement": {
+        "possible": false,
+        "score": 0,
+        "reasons": [
+          "丢失帖描述的是OPPO品牌白色无线耳机及充电盒，找到帖描述的是白色与灰色配色的鼠标，两者属于不同类别的电子产品。",
+          "丢失帖物品为耳机/充电盒，找到帖物品为鼠标，外观结构、功能用途完全不同，不存在同一实物的可能。"
+        ],
+        "conflicts": [
+          "类别矛盾：丢失帖为耳机，找到帖为鼠标。",
+          "品牌矛盾：丢失帖品牌为OPPO，找到帖无品牌且外观为鼠标。",
+          "外观矛盾：丢失帖为充电盒与入耳式耳机，找到帖为带几何线条、镂空结构、六边形标志的鼠标。"
+        ],
+        "uncertainty": "地点与时间字段均为测试用虚构数据且相同，无法据此进一步判断；但类别与外观已构成明确矛盾，故判定为不可能为同一实物。"
+      },
+      "notification_created": false
+    }
+  ],
+  "note": "At most 14 calls, no retry, temporary database. Pair labels describe visual hypotheses, not verified ownership. This test directly invokes the provider/service and notification transaction; it is not a full browser or exhaustive automatic-candidate-recall evaluation."
+}

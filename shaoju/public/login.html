@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>登录 · 校园失物招领</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="header"></header>
+
+  <main class="container narrow">
+    <div class="card">
+      <h2 class="page-title">登录</h2>
+      <p class="page-subtitle">登录后即可发布失物 / 招领信息并管理自己的发布。</p>
+
+      <div class="alert" id="alert"></div>
+
+      <form id="login-form" autocomplete="on">
+        <div class="field">
+          <label for="username">学号<span class="req">必填</span></label>
+          <input type="text" id="username" name="username" autocomplete="username" placeholder="例如：20230101" required>
+        </div>
+        <div class="field">
+          <label for="password">密码<span class="req">必填</span></label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn block" type="submit" id="submit-btn">登录</button>
+      </form>
+
+      <p class="small muted mt-16">还没有账号？<a href="/register">立即注册</a></p>
+      <p class="small muted">演示管理员：<code>10000000 / admin123</code>　演示用户：<code>20230001 / 123456</code></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">校园失物招领系统 · Node.js + Express + SQLite 示例项目</footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

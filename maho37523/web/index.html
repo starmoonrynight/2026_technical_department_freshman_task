@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>校园失物招领系统</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/">校园失物招领系统</a>
+    <nav aria-label="账户操作"><span id="account"></span><button id="notifications-button" hidden>消息 <span id="unread"></span></button><button id="login-button">登录 / 注册</button><button id="logout-button" hidden>退出</button></nav>
+  </header>
+  <main>
+    <section class="hero"><div><p class="eyebrow">LOST & FOUND · HDU</p><h1>让走散的物品，<br>找到回来的路。</h1><p>丢失的线索，拾得的善意，都从这里连接。<br>上传照片，AI 帮你整理信息；最终由你确认。</p></div><button class="primary hero-action" id="new-button">＋ 发布一条线索</button></section>
+    <p class="notice" id="ai-status">正在读取功能配置…</p>
+    <section class="search-panel" aria-label="搜索物品">
+      <form id="search-form"><label class="search-label"><span class="sr-only">搜索关键词</span><input id="query" maxlength="100" placeholder="搜索校园卡、耳机、地点…"></label><label>搜索范围<select id="breadth"><option value="strict">精确 · 原词</option><option value="standard" selected>常规 · 近义词</option><option value="broad">宽泛 · 同类物品</option></select></label><button class="primary" type="submit">搜索</button></form>
+      <div class="filters"><div class="tabs" role="group" aria-label="帖子类型"><button type="button" data-type="" class="active" aria-pressed="true">全部线索</button><button type="button" data-type="lost" aria-pressed="false">我丢了东西</button><button type="button" data-type="found" aria-pressed="false">我找到了东西</button></div><label>状态 <select id="status-filter"><option value="">全部</option><option value="searching" selected>寻找中</option><option value="found">已取得联系</option><option value="closed">已完成</option></select></label></div>
+      <p class="hint">精确保留原词；常规扩展近义词；宽泛增加相关类别。匹配度高的线索优先展示。</p>
+    </section>
+    <div class="section-heading"><h2>校园里的线索</h2><span id="result-count"></span></div>
+    <div id="feed" class="feed" aria-live="polite"></div>
+    <div class="pagination"><button id="previous-page">上一页</button><span id="page-label"></span><button id="next-page">下一页</button></div>
+  </main>
+  <footer>校园失物招领系统 · 认领前请核验细节，请勿公开姓名、学号或证件号码。AI 提示仅供参考。</footer>
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <dialog id="auth-dialog"><div class="dialog-heading"><h2>欢迎回来</h2><button type="button" data-close="auth-dialog" aria-label="关闭">×</button></div>
+    <form id="auth-form"><label>用户名<input name="username" required maxlength="32" autocomplete="username"></label><label>密码<input name="password" type="password" required maxlength="72" autocomplete="current-password"></label><p class="hint">注册密码需要 8～72 字节；注册成功后请登录。</p><div class="actions"><button type="submit" class="primary" value="login">登录</button><button type="submit" value="register">注册新账户</button></div><p id="auth-message" class="form-message" role="status"></p></form>
+  </dialog>
+
+  <dialog id="compose-dialog" class="wide-dialog"><div class="dialog-heading"><h2 id="compose-title">发布线索</h2><button type="button" data-close="compose-dialog" aria-label="关闭">×</button></div>
+    <form id="compose-form">
+      <div class="two-columns"><label>帖子类型<select name="type"><option value="found">找到帖 · 我拾到了物品</option><option value="lost">丢失帖 · 我丢失了物品</option></select></label><label>丢失 / 拾得时间（可选）<input name="occurred_at" type="datetime-local"></label></div>
+      <section class="upload-box"><label>① 上传物品照片（最多 3 张）<input id="images-input" type="file" accept="image/jpeg,image/png" multiple></label><p class="hint" id="image-rule">找到帖至少一张；丢失帖可以不传。单张最大 5 MiB，支持 JPEG / PNG。</p><p class="privacy-warning">上传前遮挡姓名、学号、证件号等敏感信息。图片随帖子公开，未发布的草稿图片仅你可见。</p><div id="image-previews" class="image-previews"></div>
+        <label class="checkbox"><input type="checkbox" name="allow_ai">我同意将图片与物品描述发送给 DeepSeek，用于识图和自动匹配（不含联系方式）。</label>
+        <button id="recognize-button" type="button">② 用首张照片识图填表 · 推荐</button><p id="recognize-message" class="form-message" role="status"></p>
+      </section>
+      <p class="hint">③ 确认或修改信息再发布。AI 不会替你推断地点和时间；取消同意后，该帖不参与 AI 自动匹配。</p>
+      <div class="two-columns"><label>物品名称<input name="name" required maxlength="100" placeholder="例如：黑色蓝牙耳机"></label><label>丢失 / 拾得地点<input name="location" required maxlength="120" placeholder="例如：图书馆二楼"></label></div>
+      <div class="three-columns"><label>分类<select name="category"><option value="">未分类</option><option>卡片</option><option>电子产品</option><option>日用品</option><option>包袋</option><option>钥匙</option><option>其他</option></select></label><label>颜色<input name="color" maxlength="32"></label><label>品牌<input name="brand" maxlength="64"></label></div>
+      <label>特征标签<input name="tags" placeholder="用逗号分隔，例如：黑色, 卡套, 金属扣"></label><label>物品描述<textarea name="description" rows="4" maxlength="2000" placeholder="描述外观、独特细节，请不要填写个人身份信息。"></textarea></label>
+      <label>联系方式（可选，仅登录后在详情中可见）<input name="contact" maxlength="200" autocomplete="off" placeholder="例如：微信号或邮箱"></label>
+      <div class="actions"><button id="publish-button" class="primary" type="submit">发布线索</button><button type="button" data-close="compose-dialog">取消</button></div><p id="compose-message" class="form-message" role="status"></p>
+    </form>
+  </dialog>
+  <dialog id="detail-dialog" class="wide-dialog"><div class="dialog-heading"><h2>物品详情</h2><button type="button" data-close="detail-dialog" aria-label="关闭">×</button></div><div id="detail-content"></div></dialog>
+  <dialog id="notifications-dialog" class="wide-dialog"><div class="dialog-heading"><h2>可能的匹配</h2><button type="button" data-close="notifications-dialog" aria-label="关闭">×</button></div><p class="hint">AI 提供线索，不确认物品归属。多个候选会分别列出，请核对独特细节。</p><div id="notifications-content"></div></dialog>
+</body>
+</html>

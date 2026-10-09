@@ -1,0 +1,15 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+cookies*.txt
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.db.backup-*
+uploads/
+lostfound
+coverage.out
+/-H
+/-d

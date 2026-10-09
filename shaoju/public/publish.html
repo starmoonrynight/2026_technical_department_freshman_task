@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>发布信息 · 校园失物招领</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="header"></header>
+
+  <main class="container narrow">
+    <div class="card">
+      <h2 class="page-title" id="page-title">发布失物 / 招领信息</h2>
+      <p class="page-subtitle" id="page-subtitle">
+        提交后需要管理员审核，审核通过即会在首页公开展示。
+      </p>
+
+      <div class="alert" id="alert"></div>
+
+      <form id="item-form">
+        <div class="field">
+          <label>信息类型<span class="req">必填</span></label>
+          <div class="tabs" id="type-tabs" style="margin-bottom:0">
+            <button type="button" data-type="lost" class="active">我丢了东西（寻物启事）</button>
+            <button type="button" data-type="found">我捡到东西（失物招领）</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="title">标题<span class="req">必填</span><span class="hint">最多 80 字</span></label>
+          <input type="text" id="title" maxlength="80" placeholder="例如：丢失一个黑色长款钱包" required>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="category">物品分类<span class="opt">选填</span><span class="hint">留空按「其他」处理</span></label>
+            <select id="category"></select>
+          </div>
+          <div class="field">
+            <label for="happenedAt">丢失 / 拾取时间<span class="opt">选填</span><span class="hint">不晚于现在</span></label>
+            <input type="datetime-local" id="happenedAt">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="location">地点<span class="opt">选填</span></label>
+            <input type="text" id="location" maxlength="120" placeholder="例如：图书馆三楼自习区">
+          </div>
+          <div class="field">
+            <label for="contact">联系方式<span class="opt">选填</span><span class="hint">留空用账号里的</span></label>
+            <input type="text" id="contact" maxlength="120" placeholder="手机号 / 邮箱 / 微信">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="storagePlace">寄放处<span class="opt">选填</span><span class="hint">捡到物品时填写现在存放在哪里</span></label>
+          <input type="text" id="storagePlace" maxlength="120" placeholder="例如：图书馆一楼服务台 / 三号宿舍楼门卫">
+        </div>
+
+        <div class="field">
+          <label for="description">详细描述<span class="opt">选填</span></label>
+          <textarea id="description" maxlength="2000" placeholder="描述物品特征、颜色、内含物品等，便于辨认"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="imageFile">物品图片<span class="opt">选填</span><span class="hint">JPG / PNG / GIF / WebP，单张不超过 5MB</span></label>
+          <input type="file" id="imageFile" accept="image/png,image/jpeg,image/gif,image/webp">
+          <div class="image-preview" id="image-preview"></div>
+        </div>
+
+        <div class="field">
+          <label for="imageUrl">图片地址<span class="opt">选填</span><span class="hint">上传图片后会自动填在这里，也可以直接粘贴图片链接</span></label>
+          <input type="text" id="imageUrl" maxlength="500" placeholder="/uploads/… 或 https://…">
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" type="submit" id="submit-btn">提交</button>
+          <a class="btn ghost" href="/my">我的发布</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">校园失物招领系统 · Node.js + Express + SQLite 示例项目</footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/publish.js"></script>
+</body>
+</html>

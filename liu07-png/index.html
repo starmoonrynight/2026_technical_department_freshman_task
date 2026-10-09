@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>失物招领</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .item {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007bff;
+        }
+
+            .item.lost {
+                border-left-color: #ff4d4f;
+            }
+
+            .item.found {
+                border-left-color: #52c41a;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h2>校园失物招领</h2>
+            <div id="userArea"></div>
+        </div>
+        <div id="publishBox" class="card" style="display:none;">
+            <select id="type"><option value="失物">失物</option><option value="招领">招领</option></select>
+            <input id="title" placeholder="物品名称">
+            <input id="location" placeholder="地点">
+            <textarea id="desc" placeholder="描述"></textarea>
+            <button onclick="publish()">发布</button>
+        </div>
+        <div class="card" style="display:flex;gap:10px;">
+            <input id="kw" placeholder="搜索..." style="margin:0;">
+            <button onclick="loadItems()">搜索</button>
+        </div>
+        <div id="listArea"></div>
+    </div>
+    <div id="authModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;">
+        <div class="card" style="width:300px;">
+            <h3 id="authTitle">登录</h3>
+            <input id="authUser" placeholder="用户名">
+            <input id="authPwd" type="password" placeholder="密码">
+            <button onclick="submitAuth()" style="width:100%;">确定</button>
+            <p style="text-align:center;font-size:12px;"><a href="#" onclick="toggleAuth();return false;" id="toggleLink">去注册</a></p>
+        </div>
+    </div>
+    <script>
+        let currentUser = null;
+        let authMode = 'login';
+        function openAuth(m){authMode=m;document.getElementById('authTitle').innerText=m==='login'?'登录':'注册';document.getElementById('toggleLink').innerText=m==='login'?'去注册':'去登录';document.getElementById('authModal').style.display='flex';}
+        function closeAuth(){document.getElementById('authModal').style.display='none';}
+        function toggleAuth(){openAuth(authMode==='login'?'register':'login');}
+        function submitAuth(){
+        let u=document.getElementById('authUser').value, p=document.getElementById('authPwd').value;
+        fetch(authMode==='login'?'/api/login':'/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})})
+        .then(r=>r.json()).then(d=>{
+        if(d.msg==='注册成功'){alert('注册成功，去登录');openAuth('login');}
+        else if(d.msg==='登录成功'){currentUser={username:d.username};closeAuth();updateUI();loadItems();}
+        else alert(d.msg);
+        });
+        }
+        function checkLogin(){fetch('/api/me').then(r=>{if(r.ok)return r.json();return null;}).then(d=>{currentUser=d;updateUI();});}
+        function updateUI(){
+        let ua=document.getElementById('userArea'), pb=document.getElementById('publishBox');
+        if(currentUser){ua.innerHTML=`<span>你好，${currentUser.username}</span> <button onclick="logout()" style="background:#eee;color:#333;">退出</button>`;pb.style.display='block';}
+        else{ua.innerHTML=`<button onclick="openAuth('login')">登录</button> <button onclick="openAuth('register')" style="background:#eee;color:#333;">注册</button>`;pb.style.display='none';}
+        }
+        function logout(){fetch('/api/logout',{method:'POST'}).then(()=>{currentUser=null;updateUI();loadItems();});}
+
+        function loadItems(){
+        let kw=document.getElementById('kw').value;
+        fetch('/api/items?keyword='+encodeURIComponent(kw)).then(r=>r.json()).then(items=>{
+        let a=document.getElementById('listArea');
+        if(!items.length){a.innerHTML='<div class="card" style="text-align:center;color:#aaa;">暂无信息</div>';return;}
+        a.innerHTML=items.map(i=>{
+        let cls=i.type==='失物'?'lost':'found';
+        let isOwner=currentUser&&currentUser.id===i.user_id;
+
+        // 权限与状态管理的按钮逻辑
+        let buttons = '';
+        if(isOwner){
+        buttons += `<button style="background:#faad14;font-size:12px;" onclick="editItem(${i.id}, '${i.title}', '${i.desc}', '${i.location}')">修改信息</button>`;
+        if(i.status === '寻找中') {
+        buttons += `<button style="background:#52c41a;font-size:12px;" onclick="changeStatus(${i.id}, '已找到')">标记为已找到</button>`;
+        } else if(i.status === '已找到') {
+        buttons += `<button style="background:#8c8c8c;font-size:12px;" onclick="changeStatus(${i.id}, '已结束')">标记为已结束</button>`;
+        }
+        buttons += `<button style="background:#ff4d4f;font-size:12px;" onclick="removeItem(${i.id})">删除</button>`;
+        }
+
+        return `<div class="item ${cls}">
+        <span style="font-size:12px;color:#888;">[${i.type}] 状态：${i.status}</span>
+        <h4 style="margin:5px 0;">${i.title}</h4>
+        <p style="margin:0;font-size:14px;color:#555;">${i.desc||'（无描述）'}</p>
+        <p style="font-size:12px;color:#888;">📍${i.location} | 🕐${i.time} | 发布者：${i.username}</p>
+        <div style="margin-top:8px;">${buttons}</div>
+        </div>`;
+        }).join('');
+        });
+        }
+
+        function publish(){
+        let t=document.getElementById('title').value;
+        if(!t)return alert('标题不能为空');
+        fetch('/api/items',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:document.getElementById('type').value,title:t,location:document.getElementById('location').value,desc:document.getElementById('desc').value})})
+        .then(r=>r.json()).then(()=>{document.getElementById('title').value='';document.getElementById('location').value='';document.getElementById('desc').value='';loadItems();});
+        }
+
+        // 修改信息（使用最简单的prompt，保证能跑通）
+        function editItem(id, oldTitle, oldDesc, oldLoc){
+        let t = prompt("修改物品名称：", oldTitle);
+        if(t === null) return;
+        let d = prompt("修改描述：", oldDesc);
+        if(d === null) return;
+        let l = prompt("修改地点：", oldLoc);
+        if(l === null) return;
+
+        fetch('/api/items/'+id, {
+        method:'PUT', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({title:t, desc:d, location:l})
+        }).then(r=>r.json()).then(()=>loadItems());
+        }
+
+        // 状态管理：寻找中 -> 已找到 -> 已结束
+        function changeStatus(id, newStatus){
+        fetch('/api/items/'+id, {
+        method:'PUT', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({status:newStatus})
+        }).then(r=>r.json()).then(()=>loadItems());
+        }
+
+        function removeItem(id){if(!confirm('确定删除吗？'))return;fetch('/api/items/'+id,{method:'DELETE'}).then(()=>loadItems());}
+
+        checkLogin().then(loadItems);
+    </script>
+</body>
+</html>

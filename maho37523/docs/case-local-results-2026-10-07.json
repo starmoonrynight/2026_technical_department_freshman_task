@@ -1,0 +1,98 @@
+{
+  "mode": "local-upload-and-deterministic-mock",
+  "real_model_called": false,
+  "uploads": [
+    {
+      "file": "1.jpg",
+      "original_bytes": 58501,
+      "original_width": 364,
+      "original_height": 562,
+      "media_id": 1,
+      "stored_width": 364,
+      "stored_height": 562,
+      "stored_mime": "image/jpeg",
+      "upload_http_status": 201
+    },
+    {
+      "file": "2.jpg",
+      "original_bytes": 1156523,
+      "original_width": 1552,
+      "original_height": 1996,
+      "media_id": 2,
+      "stored_width": 1244,
+      "stored_height": 1600,
+      "stored_mime": "image/jpeg",
+      "upload_http_status": 201
+    },
+    {
+      "file": "4.jpg",
+      "original_bytes": 1033345,
+      "original_width": 1474,
+      "original_height": 1470,
+      "media_id": 3,
+      "stored_width": 1474,
+      "stored_height": 1470,
+      "stored_mime": "image/jpeg",
+      "upload_http_status": 201
+    },
+    {
+      "file": "5.jpg",
+      "original_bytes": 1281416,
+      "original_width": 3456,
+      "original_height": 1524,
+      "media_id": 4,
+      "stored_width": 1600,
+      "stored_height": 705,
+      "stored_mime": "image/jpeg",
+      "upload_http_status": 201
+    },
+    {
+      "file": "23.png",
+      "original_bytes": 161291,
+      "original_width": 890,
+      "original_height": 664,
+      "media_id": 5,
+      "stored_width": 890,
+      "stored_height": 664,
+      "stored_mime": "image/jpeg",
+      "upload_http_status": 201
+    },
+    {
+      "file": "231.jpg",
+      "original_bytes": 1097274,
+      "original_width": 3516,
+      "original_height": 1436,
+      "media_id": 6,
+      "stored_width": 1600,
+      "stored_height": 653,
+      "stored_mime": "image/jpeg",
+      "upload_http_status": 201
+    },
+    {
+      "file": "4341.jpg",
+      "original_bytes": 1838618,
+      "original_width": 1786,
+      "original_height": 3016,
+      "media_id": 7,
+      "stored_width": 947,
+      "stored_height": 1600,
+      "stored_mime": "image/jpeg",
+      "upload_http_status": 201
+    },
+    {
+      "file": "43951.jpg",
+      "original_bytes": 5101042,
+      "original_width": 3072,
+      "original_height": 2902,
+      "media_id": 8,
+      "stored_width": 1600,
+      "stored_height": 1511,
+      "stored_mime": "image/jpeg",
+      "upload_http_status": 201
+    }
+  ],
+  "mock_extract_tasks": 8,
+  "mock_comparisons": 10,
+  "notifications": 3,
+  "note": "Labels and matching decisions are manually assigned fixtures. This test cannot establish recognition accuracy or physical item identity."
+}
